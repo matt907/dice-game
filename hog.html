@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+	<title> HOG Dice Game </title>
+		<style>
+			tr,td{
+				background-color:#FFF;
+				border-style: solid;
+				border-width:2px;
+				text-align:center;
+			}
+			
+			body{
+				background-color:#b6cbed;
+				margin-left:25%;
+				margin-right:25%;
+				font-family:sans-serif;
+			}
+			
+			#inst{
+				background-color:gray;
+				padding:8px 5px;
+			}
+			
+		</style>
+		<script type="text/javascript">
+			function play(){
+				var player=0;
+				var computer=0;
+				document.getElementById("playerScore").value=player;
+				document.getElementById("computerScore").value=computer;
+				document.getElementById("status").value="Player's Turn";
+				
+				var score;
+				score=0;
+				
+				document.getElementById("score").value=score;
+			}//end play
+			
+			function endGame(){
+				document.getElementById("value").value=0;
+				document.getElementById("score").value=0;
+				document.getElementById("playerScore").value=0;
+				document.getElementById("computerScore").value=0;	
+				document.getElementById("status").value="Game Ended";
+			}//end endGame
+			
+			function roll(){				
+				var dice,sum,score;
+				
+				dice=Math.floor(1+Math.random()*6);
+
+				if(dice==1){
+					document.getElementById("value").value=1;
+					document.getElementById("score").value=0;
+					document.getElementById("status").value="Computer's Turn";
+					computerTurn();
+				}
+				else{
+				score=parseInt(document.getElementById("score").value);
+				sum = dice + score;
+				document.getElementById("value").value=dice;
+				document.getElementById("score").value=sum;
+				}
+				return dice;	
+			}//end roll
+			
+			function endTurn(){
+				document.getElementById("status").value="Computer's Turn";
+				var score,current,win;
+				win=100;
+				current=parseInt(document.getElementById("playerScore").value);
+				score=parseInt(document.getElementById("score").value);
+				score=score+current;
+				document.getElementById("playerScore").value=score;
+				if(score>=win){
+					document.getElementById("status").value="Player Wins!";
+				}
+				if(score<win){
+					computerTurn();
+				}
+			}
+			
+			function computerTurn(){
+				document.getElementById("score").value=0;
+				document.getElementById("value").value=0;
+				var i,dice,sum,score,win,current;
+				win=100;
+				i=0;
+				current=parseInt(document.getElementById("computerScore").value);
+				setTimeout(function(){
+				while(i<4){	
+					dice=Math.floor(1+Math.random()*6);
+					if(dice==1){
+					document.getElementById("score").value=0;
+					document.getElementById("status").value="Player's Turn";
+					i=4;
+					}
+					else{
+					score=parseInt(document.getElementById("score").value);
+					sum = dice + score;	
+					document.getElementById("score").value=sum;
+					sum = sum + current;
+					document.getElementById("computerScore").value=sum;
+						if(sum>=win){
+							document.getElementById("status").value="Computer Wins";
+						}
+						if(sum<win){
+							document.getElementById("status").value="Player's Turn";
+							document.getElementById("score").value=0;
+						}
+					i++;
+					}
+				
+				}//end while
+				},3000);
+			}//end computerTurn
+		</script>
+	</head>
+	<h1><center> HOG </center></h1>
+	<body>
+		
+		<div><center>
+		<button type="button" id="start" onclick="play()"> Start Game</button>
+		<button type="button" id="end" onclick="endGame()"> End Game</button>
+		</br></br>
+		<table>
+			<col width="130">
+			<col width="130">
+			<tr>
+				<td>Player</td>
+				<td>Computer</td>
+			</tr>
+			<tr>
+				<td><input id="playerScore" type="text" readonly/></td>
+				<td><input id="computerScore" type="text"readonly/></td>
+			</tr>
+		</table>
+		</br>
+		Current Score: <input id="score" type="text" readonly/>
+		</br></br>
+		
+		<button type="button" id="roll" onclick="roll()">Roll Dice</button>
+		<button type="button" id="end" onclick="endTurn()">End Turn</button>
+		</br></br>
+		
+		Value Rolled: <input id="value" type="text" readonly/>
+		</br></br>
+		<input id="status" type="text" readonly/>
+		</br></br>
+		</center></div>
+		
+		<div id="inst">
+		<h2>How to play:</h2>
+			<ul>
+				<li> The objective it to score 100 points before your opponent does.</li>
+			</ul>
+			<ol>
+				<li>Click 'Start Game' and then click 'Roll Dice' to begin your turn.</li>
+				<li>In each turn a player will roll the dice repeatedly until either a 1 is rolled or the player decided to end their turn</li>
+				<li>The number the player rolls is added to a temporary score, if the player rolls a 1, they lose this score</li>
+				<li>The player can roll as many times as they wish before they get a score of 1</li>
+				<li>If a player ends their turn, their temporary score is added to their overall score</li>
+			<ol>
+		</div>
+	</body>
+</html>
